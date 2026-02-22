@@ -1,16 +1,129 @@
-# React + Vite
+# HRMS Mini -- MERN Practice Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Summary
 
-Currently, two official plugins are available:
+HRMS Mini is a simple full-stack Employee Management system built using
+MERN stack fundamentals (without MongoDB for now --- in-memory storage
+for learning).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The goal of this project is to practice:
 
-## React Compiler
+-   REST API design using Express
+-   Connecting React frontend to backend
+-   Handling CRUD operations
+-   Understanding props, component structure, and data flow
+-   Practicing real-world engineering habits (separation of concerns,
+    commits, structure)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project focuses on strengthening core full-stack fundamentals
+before scaling complexity.
 
-## Expanding the ESLint configuration
+------------------------------------------------------------------------
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠 Tech Stack
+
+### Frontend
+
+-   React (Vite)
+-   Functional components
+-   useState, useEffect
+-   Fetch API
+
+### Backend
+
+-   Node.js
+-   Express
+-   REST APIs
+-   In-memory data storage
+-   CORS handling
+
+------------------------------------------------------------------------
+
+## 🚀 Features Implemented
+
+### Backend
+
+-   GET `/employees` → Fetch all employees
+-   GET `/employees/:id` → Fetch single employee
+-   POST `/employee` → Add new employee
+-   PUT `/employees/:id` → Update employee (WIP logic)
+-   DELETE `/employees/:id` → Delete employee
+
+### Frontend
+
+-   Fetch employee list from backend
+-   Render employees dynamically using `.map()`
+-   Reusable `Employee` component
+-   Props spreading (`{...d}` pattern)
+-   Proper `key` usage for list rendering
+
+------------------------------------------------------------------------
+
+## 🖥 UI Overview
+
+The UI is intentionally minimal and functional.
+
+### Structure:
+
+-   Main App component
+-   Employee component (reusable card-like structure)
+
+### Flow:
+
+1.  On component mount, `useEffect` triggers API call.
+2.  Data is stored in state (`useState`).
+3.  Employees are rendered dynamically.
+4.  Each employee displays:
+    -   Name
+    -   Age
+    -   Department
+    -   Salary
+
+The UI currently focuses on: - Data flow clarity - Clean component
+separation - Backend integration correctness
+
+Styling is minimal because the primary goal is architecture and data
+handling.
+
+------------------------------------------------------------------------
+
+## 📦 How to Run
+
+### Backend
+
+    npm install
+    node server.js
+
+Runs on: http://localhost:3000
+
+### Frontend
+
+    npm install
+    npm run dev
+
+Runs on: http://localhost:5173
+
+Make sure backend runs before frontend.
+
+------------------------------------------------------------------------
+
+## 🔮 Next Improvements
+
+-   Add MongoDB (replace in-memory array)
+-   Add proper PUT update logic
+-   Add form to create employees from UI
+-   Add loading & error states
+-   Add basic styling (Tailwind or CSS modules)
+-   Add environment variables
+-   Add folder structuring for scalability
+
+------------------------------------------------------------------------
+
+## 🧠 What This Project Demonstrates
+
+-   Ability to design and consume REST APIs
+-   Understanding of React lifecycle via `useEffect`
+-   Handling asynchronous operations
+-   State management basics
+-   Component-driven architecture
+-   Debugging and iterative improvement
