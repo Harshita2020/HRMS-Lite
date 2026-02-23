@@ -1,29 +1,26 @@
 const Employee = ({ id, name, age, dept, salary }) => {
   return (
-    <div
-      style={{
-        border: "1px solid white",
-        borderRadius: "8px",
-        marginBottom: "20px",
-        padding: "20px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-        backgroundColor:"#FFFFFF"
-      }}
-    >
-      <div style={{ fontWeight: "bold", fontSize:"18px" }}>Name: {name}</div>
-      <div>Dept: {dept}</div>
-      <hr style={{ color: "gray", background: "#e0e0e0", margin:"0px" }}></hr>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>Age: {age}</div>
+    <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200">
 
-        <div style={{ fontWeight: "bold", fontSize:"17px" }}>Salary: ₹{salary}</div>
+      {/* Top Row */}
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-lg font-semibold text-gray-800">
+          {name}
+        </h2>
+        <span className="text-green-600 font-bold">
+          ₹{salary}
+        </span>
       </div>
+
+      {/* Divider */}
+      <div className="border-t border-gray-200 my-2"></div>
+
+      {/* Bottom Row */}
+      <div className="flex justify-between text-gray-600 text-sm">
+        <span>Dept: {dept}</span>
+        <span>Age: {age}</span>
+      </div>
+
     </div>
   );
 };

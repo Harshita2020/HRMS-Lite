@@ -1,6 +1,4 @@
-import React from "react";
 import { useState, useEffect } from "react";
-
 import Employee from "./Employee";
 
 const EmployeesList = () => {
@@ -14,47 +12,28 @@ const EmployeesList = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
-      <h1
-        style={{
-          textAlign: "center",
-          fontFamily: "sans-serif",
-          color: "#2c2682",
-        }}
-      >
-        HRMS Dashboard
-      </h1>
-      <button
-        style={{
-          color: "white",
-          padding: "10px",
-          margin: "auto 90px",
-          background: "#4CAF50",
-          justifyContent: "left",
-          alignItems: "left",
-          width: "150px",
-          border: "none",
-          borderRadius: "8px",
-          fontWeight: "bold",
-          fontSize: "15px",
-          cursor: "pointer",
-        }}
-      >
-        Add Employee
-      </button>
-      {/* <p>Fetching data from the backend.....</p> */}
+    <div className="min-h-screen bg-gray-100 py-10">
+      <div className="max-w-3xl mx-auto px-4">
+        
+        {/* Header */}
+        <h1 className="text-3xl font-bold text-blue-700 text-center mb-6">
+          HRMS Dashboard
+        </h1>
 
-      <div>
-        {data.map((d) => (
-          <div
-            style={{
-              maxWidth: "85%",
-              margin: "40px auto",
-            }}
-          >
+        {/* Button */}
+        <div className="mb-6">
+          <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-sm transition-all duration-200">
+            Add Employee
+          </button>
+        </div>
+
+        {/* Employee Cards */}
+        <div className="space-y-4">
+          {data.map((d) => (
             <Employee key={d.id} {...d} />
-          </div>
-        ))}
+          ))}
+        </div>
+
       </div>
     </div>
   );
