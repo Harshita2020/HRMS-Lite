@@ -11,40 +11,51 @@ const EmployeesList = () => {
       .catch((err) => console.log("ERROR!!!", err));
   }, []);
 
-  const handleDelete = (id) => {
-    fetch(`http://localhost:3000/employee/${id}`, {
-      method: "DELETE",
-    });
-    setData((prev) => prev.filter((emp) => emp.id !== id));
-  };
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/employees/${id}`,
+        { method: "DELETE" }
+      );
 
-  // const filteredData = data.filter()
+      if (res.ok) {
+        setData((prev) => prev.filter((emp) => emp.id !== id));
+      }
+    } catch (err) {
+      console.log("Delete failed", err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-3xl mx-auto px-4">
         {/* Header */}
-        <h1 className="text-3xl font-bold text-blue-700 text-center mb-6">
+        <h1 className="text-3xl font-bold text-blue-700 text-center mb-8">
           HRMS Dashboard
         </h1>
 
-        {/* Button */}
-        <div className="mb-6">
-          <button className="bg-green-500 hover:bg-green-600 text-white text-center font-semibold px-5 py-2 rounded-lg shadow-sm transition-all duration-200 cursor-pointer">
+        {/* Add Button */}
+        <div className="flex justify-start mb-8">
+          <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg shadow-sm transition cursor-pointer">
             Add Employee
           </button>
         </div>
 
-        {/* Employee Cards */}
+        {/* Employee Cards OR Empty State */}
         {data.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {data.map((d) => (
-              <Employee key={d.id} {...d} onDelete={() => handleDelete(d.id)} />
+              <Employee
+                key={d.id}
+                {...d}
+                onDelete={() => handleDelete(d.id)}
+              />
             ))}
           </div>
         ) : (
-          <div className="min-h-80 flex items-center justify-center">
-            <p className="text-gray-400 text-center">
+          <div className="mt-24 text-center text-gray-500 text-lg font-medium">
+            <p>No employees yet.</p>
+            <p className="text-gray-400 text-base mt-2">
               Add your first employee to get started!
             </p>
           </div>
