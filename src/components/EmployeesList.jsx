@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import Employee from "./Employee";
+import AddEmployeeForm from "./AddEmployeeForm";
+import Modal from "./Modal";
 
 const EmployeesList = () => {
   const [data, setData] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:3000/employees")
@@ -13,10 +16,9 @@ const EmployeesList = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/employees/${id}`,
-        { method: "DELETE" }
-      );
+      const res = await fetch(`http://localhost:3000/employees/${id}`, {
+        method: "DELETE",
+      });
 
       if (res.ok) {
         setData((prev) => prev.filter((emp) => emp.id !== id));
@@ -26,6 +28,13 @@ const EmployeesList = () => {
     }
   };
 
+  const handleShowForm = () => {
+    setShowForm(true);
+  };
+
+  const onClose = () => {
+    setShowForm(false);
+  };
   return (
     <div className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-3xl mx-auto px-4">
@@ -36,7 +45,10 @@ const EmployeesList = () => {
 
         {/* Add Button */}
         <div className="flex justify-start mb-8">
-          <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg shadow-sm transition cursor-pointer">
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg shadow-sm transition cursor-pointer"
+            onClick={handleShowForm}
+          >
             Add Employee
           </button>
         </div>
@@ -45,11 +57,7 @@ const EmployeesList = () => {
         {data.length > 0 ? (
           <div className="space-y-6">
             {data.map((d) => (
-              <Employee
-                key={d.id}
-                {...d}
-                onDelete={() => handleDelete(d.id)}
-              />
+              <Employee key={d.id} {...d} onDelete={() => handleDelete(d.id)} />
             ))}
           </div>
         ) : (
@@ -61,6 +69,13 @@ const EmployeesList = () => {
           </div>
         )}
       </div>
+      {showForm && (
+        <Modal
+          heading="Add Employee"
+          onClose={onClose}
+          children={<AddEmployeeForm />}
+        />
+      )}
     </div>
   );
 };
