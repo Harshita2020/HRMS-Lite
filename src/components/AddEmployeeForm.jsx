@@ -1,31 +1,121 @@
-import React from 'react'
+import React, { useState } from "react";
 
-const AddEmployeeForm = () => {
+const AddEmployeeForm = ({ onAdd }) => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const newEmployee = {
+      id: Date.now(),
+      name: formData.fullName,
+      email: formData.email,
+    };
+
+    onAdd(newEmployee);
+
+    setFormData({
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+  };
+
   return (
     <>
-    {/* <h1>Add Employee</h1> */}
-    <h4>Fill out the details below to add a new employee.</h4>
-    <form>
-      
-      <div>
-        <label for="fullName">Full Name</label>
-        <input type="text" for="fullName" placeholder='Enter full name' className='p-4 m-2 border-gray-100 w-auto h-2'/>
-      </div>
-      <div>
-        <label for="email">Email</label>
-        <input type="email" for="email" placeholder='Enter email' className='p-4 m-2 border-gray-100 w-auto h-2'/>
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <input type="password" for="password" placeholder='Enter password' className='p-4 m-2 border-gray-100 w-auto h-2'/>
-      </div>
-      <div>
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" for="confirmPassword" placeholder='Confirm password' className='p-4 m-2 border-gray-100 w-auto h-2'/>
-      </div>
-    </form>
-    </>
-  )
-}
+      <h4 className="mb-4 text-gray-600">
+        Fill out the details below to add a new employee.
+      </h4>
 
-export default AddEmployeeForm
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="fullName" className="block text-sm font-medium">
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded-md"
+            placeholder="Enter full name"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded-md"
+            placeholder="Enter email"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded-md"
+            placeholder="Enter password"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="confirmPassword" className="block text-sm font-medium">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded-md"
+            placeholder="Confirm password"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md font-semibold"
+        >
+          Add Employee
+        </button>
+      </form>
+    </>
+  );
+};
+
+export default AddEmployeeForm;
