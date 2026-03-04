@@ -28,6 +28,26 @@ const EmployeesList = () => {
     }
   };
 
+  const handleAdd = async (newEmployee) => {
+    try {
+      const res = await fetch("http://localhost:3000/employees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newEmployee),
+      });
+
+      if (res.ok) {
+        setData((prev) => [...prev, newEmployee]);
+        setShowForm(false);
+      }
+    } catch (err) {
+      console.log("Add failed", err);
+    }
+  };
+  // console.log("New Employee Added!!! ", data)
+
   const handleShowForm = () => {
     setShowForm(true);
   };
@@ -35,6 +55,7 @@ const EmployeesList = () => {
   const onClose = () => {
     setShowForm(false);
   };
+
   return (
     <div className="min-h-screen bg-gray-100 py-12">
       <div className="max-w-3xl mx-auto px-4">
@@ -70,11 +91,9 @@ const EmployeesList = () => {
         )}
       </div>
       {showForm && (
-        <Modal
-          heading="Add Employee"
-          onClose={onClose}
-          children={<AddEmployeeForm />}
-        />
+        <Modal heading="Add Employee" onClose={onClose}>
+          {<AddEmployeeForm onAdd={handleAdd} />}
+        </Modal>
       )}
     </div>
   );

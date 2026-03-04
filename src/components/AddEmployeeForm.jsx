@@ -3,9 +3,9 @@ import React, { useState } from "react";
 const AddEmployeeForm = ({ onAdd }) => {
   const [formData, setFormData] = useState({
     fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    department: "",
+    age: 0,
+    salary: 0,
   });
 
   const handleChange = (e) => {
@@ -19,24 +19,21 @@ const AddEmployeeForm = ({ onAdd }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
     const newEmployee = {
       id: Date.now(),
       name: formData.fullName,
-      email: formData.email,
+      age: Number(formData.age),
+      salary: Number(formData.salary),
+      dept: formData.department,
     };
 
     onAdd(newEmployee);
 
     setFormData({
       fullName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      age: 0,
+      department: "",
+      salary: 0,
     });
   };
 
@@ -61,49 +58,52 @@ const AddEmployeeForm = ({ onAdd }) => {
             placeholder="Enter full name"
           />
         </div>
-
         <div>
-          <label htmlFor="email" className="block text-sm font-medium">
-            Email
+          <label htmlFor="age" className="block text-sm font-medium">
+            Age
           </label>
           <input
-            type="email"
-            id="email"
-            value={formData.email}
+            type="number"
+            id="age"
+            value={formData.age}
             onChange={handleChange}
+            min={0}
+            max={100}
             required
             className="w-full p-2 border rounded-md"
-            placeholder="Enter email"
+            placeholder="Enter Age"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium">
-            Password
+          <label htmlFor="department" className="block text-sm font-medium">
+            Department
           </label>
           <input
-            type="password"
-            id="password"
-            value={formData.password}
+            type="text"
+            id="department"
+            value={formData.department}
             onChange={handleChange}
             required
             className="w-full p-2 border rounded-md"
-            placeholder="Enter password"
+            placeholder="Enter Department"
           />
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium">
-            Confirm Password
+          <label htmlFor="salary" className="block text-sm font-medium">
+            Salary
           </label>
           <input
-            type="password"
-            id="confirmPassword"
-            value={formData.confirmPassword}
+            type="number"
+            id="salary"
+            value={formData.salary}
             onChange={handleChange}
+            min={0}
+            // max={100}
             required
             className="w-full p-2 border rounded-md"
-            placeholder="Confirm password"
+            placeholder="Enter Salary"
           />
         </div>
 
