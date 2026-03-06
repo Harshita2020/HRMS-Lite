@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import Employee from "./Employee";
 import AddEmployeeForm from "./AddEmployeeForm";
 import Modal from "./Modal";
+import EditEmployeeForm from "./EditEmployeeForm";
 
 const EmployeesList = () => {
   const [data, setData] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editForm, setEditForm] = useState(false);
+  const [employee, setEmployee] = useState({});
 
   useEffect(() => {
     fetch("http://localhost:3000/employees")
@@ -46,8 +49,33 @@ const EmployeesList = () => {
       console.log("Add failed", err);
     }
   };
-  // console.log("New Employee Added!!! ", data)
 
+  const handleEdit = async (newEmployee, id) => {
+    
+    console.log("ID=====> ", id)
+    try {
+      const res = await fetch(`http://localhost:3000/employees/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newEmployee),
+      });
+
+      if (res.ok) {
+        setData((prev) => [...prev, newEmployee]);
+        setEditForm(false);
+      }
+    } catch (err) {
+      console.log("Update failed", err);
+    }
+  };
+  console.log("Employee Updated!!! ", data);
+
+  const handleEditForm = (_, d) => {
+    setEditForm(true);
+    setEmployee(d);
+  };
   const handleShowForm = () => {
     setShowForm(true);
   };
@@ -78,7 +106,15 @@ const EmployeesList = () => {
         {data.length > 0 ? (
           <div className="space-y-6">
             {data.map((d) => (
-              <Employee key={d.id} {...d} onDelete={() => handleDelete(d.id)} />
+              <Employee
+                key={d.id}
+                {...d}
+                onDelete={() => handleDelete(d.id)}
+                onEdit={() => {
+                  // handleEdit(d.id);
+                  handleEditForm(true, d);
+                }}
+              />
             ))}
           </div>
         ) : (
@@ -93,6 +129,11 @@ const EmployeesList = () => {
       {showForm && (
         <Modal heading="Add Employee" onClose={onClose}>
           {<AddEmployeeForm onAdd={handleAdd} />}
+        </Modal>
+      )}
+      {editForm && (
+        <Modal heading="Update Employee" onClose={onClose}>
+          {<EditEmployeeForm onEdit={() => handleEdit(employee.id)} employee={employee} />}
         </Modal>
       )}
     </div>
