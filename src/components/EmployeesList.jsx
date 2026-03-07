@@ -51,10 +51,9 @@ const EmployeesList = () => {
   };
 
   const handleEdit = async (newEmployee, id) => {
-    
-    console.log("ID=====> ", id)
+    console.log("ID=====> ", id);
     try {
-      const res = await fetch(`http://localhost:3000/employees/${id}`, {
+      const res = await fetch(`http://localhost:3000/employee/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +132,12 @@ const EmployeesList = () => {
       )}
       {editForm && (
         <Modal heading="Update Employee" onClose={onClose}>
-          {<EditEmployeeForm onEdit={() => handleEdit(employee.id)} employee={employee} />}
+          {
+            <EditEmployeeForm
+              onEdit={() => handleEdit(employee, employee.id)}
+              employee={employee}
+            />
+          }
         </Modal>
       )}
     </div>
