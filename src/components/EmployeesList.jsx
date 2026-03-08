@@ -50,11 +50,15 @@ const EmployeesList = () => {
     }
   };
 
-  const handleEdit = async (newEmployee, id) => {
-    console.log("ID=====> ", id);
+  const handleUpdate = async (newEmployee) => {
+    console.log("ID=====> ", employee.id);
     try {
-      const res = await fetch(`http://localhost:3000/employee/${id}`, {
-        method: "POST",
+      const id = employee.id;
+      console.log("Updating...", `http://localhost:3000/employees/${id}`)
+      console.log("ID============================== ", id)
+      console.log("Payload================= ", newEmployee)
+      const res = await fetch(`http://localhost:3000/employees/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -62,7 +66,7 @@ const EmployeesList = () => {
       });
 
       if (res.ok) {
-        setData((prev) => [...prev, newEmployee]);
+        setData((prev) => prev.map((emp) => emp.id === id ? newEmployee : emp))
         setEditForm(false);
       }
     } catch (err) {
@@ -110,7 +114,8 @@ const EmployeesList = () => {
                 {...d}
                 onDelete={() => handleDelete(d.id)}
                 onEdit={() => {
-                  // handleEdit(d.id);
+                  console.log("ONEDIT CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                  // handleUpdate(d.id);
                   handleEditForm(true, d);
                 }}
               />
@@ -134,7 +139,7 @@ const EmployeesList = () => {
         <Modal heading="Update Employee" onClose={onClose}>
           {
             <EditEmployeeForm
-              onEdit={() => handleEdit(employee, employee.id)}
+              onEdit={handleUpdate}
               employee={employee}
             />
           }
