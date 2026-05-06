@@ -9,12 +9,28 @@ const EmployeesList = () => {
   const [showForm, setShowForm] = useState(false);
   const [editForm, setEditForm] = useState(false);
   const [employee, setEmployee] = useState({});
+  const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/employees")
+  //     .then((res) => res.json())
+  //     .then((d) => setData(d))
+  //     .catch((err) => console.log("ERROR!!!", err));
+  // }, []);
   useEffect(() => {
-    fetch("http://localhost:3000/employees")
-      .then((res) => res.json())
-      .then((d) => setData(d))
-      .catch((err) => console.log("ERROR!!!", err));
+    const fetchEmployees = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/employees");
+        const d = await res.json();
+        setData(d);
+      } catch (err) {
+        console.log("ERROR!!!", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
   }, []);
 
   const handleDelete = async (id) => {
@@ -42,7 +58,8 @@ const EmployeesList = () => {
       });
 
       if (res.ok) {
-        setData((prev) => [...prev, newEmployee]);
+        const savedEmployee = await res.json();
+        setData((prev) => [...prev, savedEmployee]);
         setShowForm(false);
       }
     } catch (err) {
@@ -54,9 +71,9 @@ const EmployeesList = () => {
     console.log("ID=====> ", employee.id);
     try {
       const id = employee.id;
-      console.log("Updating...", `http://localhost:3000/employees/${id}`)
-      console.log("ID============================== ", id)
-      console.log("Payload================= ", newEmployee)
+      console.log("Updating...", `http://localhost:3000/employees/${id}`);
+      console.log("ID============================== ", id);
+      console.log("Payload================= ", newEmployee);
       const res = await fetch(`http://localhost:3000/employees/${id}`, {
         method: "PUT",
         headers: {
@@ -66,7 +83,12 @@ const EmployeesList = () => {
       });
 
       if (res.ok) {
-        setData((prev) => prev.map((emp) => emp.id === id ? newEmployee : emp))
+        const updatedEmployee = await res.json();
+
+        setData((prev) =>
+          prev.map((emp) => (emp.id === id ? updatedEmployee : emp)),
+        );
+
         setEditForm(false);
       }
     } catch (err) {
@@ -86,6 +108,9 @@ const EmployeesList = () => {
   const onClose = () => {
     setShowForm(false);
   };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-12">
@@ -114,7 +139,7 @@ const EmployeesList = () => {
                 {...d}
                 onDelete={() => handleDelete(d.id)}
                 onEdit={() => {
-                  console.log("ONEDIT CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                  console.log("ONEDIT CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                   // handleUpdate(d.id);
                   handleEditForm(true, d);
                 }}
@@ -137,12 +162,7 @@ const EmployeesList = () => {
       )}
       {editForm && (
         <Modal heading="Update Employee" onClose={onClose}>
-          {
-            <EditEmployeeForm
-              onEdit={handleUpdate}
-              employee={employee}
-            />
-          }
+          {<EditEmployeeForm onEdit={handleUpdate} employee={employee} />}
         </Modal>
       )}
     </div>
